@@ -1,0 +1,22 @@
+{
+  "name": "ShippingTheEmptyBox",
+  "version": "0.0.0",
+  "description": "Shipping the Empty Box: Build Engeineering for Video Games",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheSeg/ShippingTheEmptyBox.git"
+  },
+  "author": "John *Seg* Seggerson",
+  "license": "CA-BY-SA",
+  "bugs": {
+    "url": "https://github.com/TheSeg/ShippingTheEmptyBox/issues"
+  },
+  "homepage": "https://github.com/TheSeg/ShippingTheEmptyBox",
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}
