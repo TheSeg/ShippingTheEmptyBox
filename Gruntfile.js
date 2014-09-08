@@ -1,6 +1,11 @@
 /*global module:false*/
+/*global require:false*/
 module.exports = function(grunt) {
 
+  // These plugins provide necessary tasks.
+  var matchdep = require('matchdep');
+  matchdep.filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  
   // Project configuration.
   grunt.initConfig({
     // Metadata.
@@ -9,7 +14,36 @@ module.exports = function(grunt) {
       '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed Creative Commons (CA-BY-SA) */\n',
+    
     // Task configuration.
+    
+    svgmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '_assets/images/',
+          src: ['**/*.svg'],
+          dest: '_svg-min/',
+        }]
+      }
+    },
+    grunticon: {
+      dist: {
+        options: {
+          previewhtml:"index.html",
+          pngfolder:"png/",
+          pngpath:"./png"
+        },
+        files: [{
+          expand:true,
+          flatten:true,
+          cwd:'_svg-min/',
+          src: ['**/*.svg'],
+          dest: 'dist/svg/'
+        }]
+      }
+    },
+    
     concat: {
       options: {
         banner: '<%= banner %>',
@@ -25,7 +59,7 @@ module.exports = function(grunt) {
         banner: '<%= banner %>'
       },
       dist: {
-        src: '<%= concat.dist.dest %>',
+        src: 'dist/<%= pkg.name %>.js',
         dest: 'dist/<%= pkg.name %>.min.js'
       }
     },
@@ -43,16 +77,19 @@ module.exports = function(grunt) {
         boss: true,
         eqnull: true,
         browser: true,
-        globals: {}
+        devel: true,
+        globals: {
+          jQuery: true,
+        }
       },
       gruntfile: {
         src: 'Gruntfile.js'
       },
       dist_preconcat: {
-        src: 'assets/scripts/**/*.js'
+        src: '_assets/scripts/**/*.js'
       },
       dist_postconcat: {
-        src: '<%= uglify.dist.dest %>'
+        //src: '<%= uglify.dist.dest %>'
       }
     },
     sass: {
@@ -68,16 +105,12 @@ module.exports = function(grunt) {
     },
     watch: {
       gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
+        files: 'Gruntfile.js',
         tasks: ['jshint:gruntfile']
       },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test']
-      },
       js: {
-        files: '<%= jshint.dist.src %>',
-        tasks: [ 'jshint:dist_preconcat', 'uglify:dist', 'jshint:dist_postconcat']
+        files: '_assets/scripts/**/*.js',
+        tasks: [ 'jshint:dist_preconcat', 'concat:dist', 'uglify:dist', 'jshint:dist_postconcat']
       },
       style: {
         files: '_assets/style/**/*.scss',
@@ -86,14 +119,7 @@ module.exports = function(grunt) {
     }
   });
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-sass');
-
   // Default task.
-  grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'sass']);
+  grunt.registerTask('default', [ 'svgmin', 'grunticon', 'jshint', 'concat', 'uglify', 'sass' ]);
 
 };

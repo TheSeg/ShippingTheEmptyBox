@@ -13,3 +13,4 @@ dist/
 # General Ignores
 *.log
 .sass-cache/
+_svg-min/
