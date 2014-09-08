@@ -8,6 +8,8 @@ _site/
 # Package Ignores
 bower_components/
 node_modules/
+dist/
 
 # General Ignores
 *.log
+.sass-cache/
