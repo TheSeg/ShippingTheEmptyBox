@@ -115,6 +115,10 @@ module.exports = function(grunt) {
       style: {
         files: '_assets/style/**/*.scss',
         tasks: ['sass:dist']
+      },
+      svg: {
+        files: '_assets/images/**/*.svg',
+        tasks: [ 'svgmin' , 'grunticon' ]
       }
     }
   });
