@@ -1,6 +1,4 @@
 @import "includes/icon";
 @import "includes/jumbotron";
-
-body {
-  background-color:#ccc;
-}
+@import "components/core";
+@import "components/nav";
