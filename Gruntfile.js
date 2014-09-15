@@ -103,6 +103,20 @@ module.exports = function(grunt) {
         }
       }
     },
+    imagemin: {
+      dist: {
+        options: {
+          
+        },
+        files: [{
+          expand:true,
+          flatten:true,
+          cwd:'_assets/images/',
+          src: ['**/*.{png,jpg,gif}'],
+          dest: 'dist/images/'
+        }]
+      }
+    },
     watch: {
       gruntfile: {
         files: 'Gruntfile.js',
@@ -119,6 +133,10 @@ module.exports = function(grunt) {
       svg: {
         files: '_assets/images/**/*.svg',
         tasks: [ 'svgmin' , 'grunticon' ]
+      },
+      imagemin: {
+        files: '_assets/images/**/*.{png,jpg,gif}',
+        tasks: [ 'imagemin' ]
       }
     }
   });
