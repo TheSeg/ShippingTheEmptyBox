@@ -1,0 +1,13 @@
+.icon { display: block; }
+.icon.icon-jcartier_box_1 { display: inline-block; background-position: center; width: 100%; height: 140px; }
+
+.jumbotron-icon { display: relative; }
+.jumbotron-icon .icon { display: absolute; }
+
+body { background-color: #ccc; }
+
+#main-container { background-color: #fff; margin-top: 0; margin-bottom: 10px; border-radius: 5px; padding: 20px 10px; }
+
+.navbar.navbar-default { margin-bottom: 10px; }
+
+/*# sourceMappingURL=ShippingTheEmptyBox.css.map */

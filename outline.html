@@ -1,0 +1,277 @@
+---
+layout: default
+title: Shipping the Empty Box - Outline
+---
+
+<h1>Shipping the Empty Box: Outline</h1>
+<p>by <a href="http://theseg.github.io/">John "Seg" Seggerson</a></p>
+  <h2>Context &amp; Terminology</h2>
+    <h3>Every build process is different.</h3>
+      <p>This lecture is about general philosophy of build engineering.</p>
+    <h3>Specific Job Titles, even if the team is only of one.</h3>
+      <p>Smaller teams can assume one person with more than one position.</p>
+    <h3>Plan for the current and future platforms.</h3>
+      <p>Assumes you will be rolling out the game on all currently planned and unplanned platforms.</p>
+      <ul>
+        <li>Start with one platform. Then rewind and reuse for other platforms.</li>
+        <li>Making a strong build process will make cross-platform development easier!</li>
+      </ul>
+  <h2>Architecting a Build Process</h2>
+    <h3>The Goals of Build Engineering</h3>
+      <ul>
+        <li>Create a deliverable game, repetitively.</li>
+        <li>Able to re-create a delivered game build, repetitively.</li>
+        <li>Create a “Clean Room” for the build process.</li>
+      </ul>
+    <h3>The Rules Of Build Engineering</h3>
+      <h4>ALWAYS act like you’re making the shipping build.</h4>
+        <p>Make the empty box first! Sure the actual build may be broken, but don’t make the build process the reason for a broken build.</p>
+        <ul>
+          <li>Build failures caused by the build process itself begin a slippery slope.
+            <ul>
+              <li>No confidence in your build process leads to uncertainty. Uncertainty leads to fear. Fear leads to a Star Wars reference.</li>
+              <li>Trying the build again with no changes is making no changes and expecting different results.</li>
+            </ul>
+          </li>
+          <li>Build with all supporting assets. 
+            <ul>
+              <li>Game icons, strings, meta data, and all other supporting assets.</li>
+              <li>Use the worst of art to start with. “Inspire” your artist to create good art.</li>
+            </ul>
+          </li>
+        </ul>
+      <h4>EVERY machine is able to make the build.</h4>
+        <p>The steps to prepare and run a build should be clearly documented and run with ease.</p>
+        <ul>
+          <li>"Hit by a truck" test. (Do not actually injure yourself!)<br>Can the build be re-created if the author of the process was away?
+            <ul>
+              <li>Can the build re-created without the primary build engineer?</li>
+              <li>Can the build be modified without the primary build engineer?</li>
+            </ul>
+          </li>
+          <li>README to get the machine to build.
+            <ul>
+              <li>Steps to get a machine’s environment up to speed.<br>Include links to obtain environment software.</li>
+              <li>Every step to run the build process.</li>
+            </ul>
+          </li>
+          <li>Make the script check the environment; Notifying problems with clear error messages.<br>
+            If you’re explaining “If this happens…” in your README, invest in checking and adjusting for these conditions in your scripts.
+            <ul>
+              <li>Are all supporting executables, libraries, etc found? If not, what’s missing?</li>
+              <li>All all source and build target file spaces defined and present?</li>
+            </ul>
+          </li>
+          <li>Make “Doctor” scripts to check up on build environment.
+            <ul>
+              <li>A pre-flight check with more information on what’s wrong and how to fix it.</li>
+            </ul>
+          </li>
+        </ul>
+      <h4>NEVER make shipping builds on a developer’s environment.</h4>
+        <p>The developer created a tool to fit their needs. A dedicated build machine creates a “clean room” to standardize the environment and analyze problems.</p>
+        <ul>
+          <li>Note: VMs are OK.</li>
+          <li>Developer environments may have custom modifications which result in “Works for me” or “build is different” issues.</li>
+          <li>Programmers: Tell your build engineer if you’ve done any work which alters building!<br>If a library isn’t included into the build and/or environment settings are needed, tell your build engineer ASAP.</li>
+        </ul>
+  <h2>Identifying Build Phases</h2>
+    <p>Inventory the steps needed to go get your game to release.</p>
+    <h3>Build Environment</h3>
+      <ul>
+        <li>What are the software requirements to make a build?
+          <ul>
+            <li>Package Management: Bower, NPM, CocoaPods, etc.
+              <ul>
+                <li>Prefer non-global when possible.</li>
+                <li>DON’T COMMIT IN THE SUPPORT PACKAGES! Commit only the configuration files.</li>
+              </ul>
+            </li>
+            <li>Global support software
+              <ul>
+                <li>Make the script check for existence of specifically needed support tools.</li>
+                <li>Show error message of missing elements clearly, stopping the build from proceeding.</li>
+              </ul>
+            </li>
+          </ul>
+          <ul>
+            <li>One script to handle all platforms.
+              <ul>
+                <li>How do these differ for different platform targets?</li>
+                <li>Grunt, Gulp are good cross-platform task runners / build systems.</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    <h3>Source Control Management (SCM)</h3>
+      <ul>
+        <li>Planning your version tagging process.
+          <ul>
+            <li>Local vs. Public Versioning
+              <ul>
+                <li>Consoles have strict version requirements at conflict with production needs.</li>
+                <li>Find your process to correlate SCM tags with public versions.</li>
+              </ul>
+            </li>
+            <li><a href="http://semver.org/">Semantic Versioning</a></li>
+          </ul>
+        </li>
+        <li>One code base. Period.
+          <ul>
+            <li>Do not commit your core codebase more than once. Do not use more than one repo.<br>If needed, copy files per build task.</li>
+            <li>Tags/branches should contain all the scripts in the repo.<br>Rollbacks will include the proper scripts to re-create the build.</li>
+          </ul>
+        </li>
+        <li>What Not to Commit to SCM.
+          <ul>
+            <li>NEVER commit your final output builds.
+              <ul>
+                <li>Use cold file storage for final builds.<br>Use folder and file names to identify build with SCM tag.</li>
+              </ul>
+            </li>
+            <li>Ignore package support files.</li>
+            <li>Ignore individual user’s build preferences.</li>
+            <li><a href="https://github.com/github/gitignore">See GitHub’s GitIgnore repository.</a></li>
+          </ul>
+        </li>
+        <li>Build script works with SCM on build machine.
+          <ul>
+            <li>Make the script automatically pull, tag, and push tags to your source control.</li>
+            <li>… but make sure development teams aren’t tagging for their development building.</li>
+          </ul>
+        </li>
+      </ul>
+    <h3>Asset Preparation</h3>
+      <ul>
+        <li>Start with the highest quality possible.<br>Always request and save the highest quality asset possible. Much easier to process to shipping quality than get stuck with attempting to “enhance.”</li>
+        <li>Re-compile in each build process.<br>While you may *save* time with caching images, you’ll miss changes in code or art and get backed into a wall.</li>
+      </ul>
+    <h3>Platform Preparation</h3>
+      <p>“All the things outside of the game.”</p>
+      <ul>
+        <li>The Game Icon <small>Every. Platform. Uses. One.</small>
+          <ul>
+            <li>Request the highest quality possible.</li>
+            <li>Re-design for sizes less than 64px, as needed.</li>
+            <li>Lowest is 16px square.</li>
+          </ul>
+        </li>
+        <li>Strings &amp; Metadata
+          <ul>
+            <li>Titles &amp; Descriptions
+              <ul>
+                <li>Common elements between platforms, but some with different requirements.</li>
+                <li>A ‘wort’ about localization. <small>(That’s German for ‘word’.)</small></li>
+              </ul>
+            </li>
+            <li>Achievements, Trophies, and related</li>
+          </ul>
+        </li>
+        <li>Ultra Platform Specific
+          <ul>
+            <li>Note and do analysis on each platform’s specific needs.</li>
+          </ul>
+        </li>
+      </ul>
+    <h3>The Building of the Builds</h3>
+      <ul>
+        <li>Try to build all platform targets in one build process… but that won’t happen.</li>
+        <li>Use the same build script code base for building per platform.</li>
+      </ul>
+    <h3>Platform Finishing</h3>
+      <p>“How do I make this build easy to install and uninstall on the target platforms?”</p>
+      <ul>
+        <li>General Platform Notes
+          <ul>
+            <li>Pre-Flight Checks
+              <ul>
+                <li>Enforce known compatibility requirements.<br>If the game will not run on Windows 95, make sure the installer won’t install the game on Windows 95.</li>
+                <li>Bundle and execute required supporting runtimes.<br><a href="http://segonmedia.com/2009/01/11/the-problem-of-directx/">“The Problem with DirectX”</a></li>
+              </ul>
+            </li>
+            <li>Uninstalling
+              <ul>
+                <li>Make the uninstaller!!!<br>Don’t be a jerk. Make the uninstaller.</li>
+                <li>Allow for clean installs on top of existing installs.<br>Invoke the uninstaller to remove the game, then install.</li>
+              </ul>
+            </li>
+            <li>Code Signing<br>While incurs a financial cost on some platforms, it may be effectively required on certain platforms.
+              <ul>
+                <li>Sign both executable &amp; installers.
+                  <ul>
+                    <li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb931395(v=vs.85).aspx">Remember to timestamp!</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>Mac:
+              <ul>
+                <li>Developer certificate ($99/year), includes Mac App Store</li>
+              </ul>
+            </li>
+            <li>Other
+              <ul>
+                <li>Mobile platforms usually provided with the program.</li>
+                <li>Consoles platforms incorporated as apart of platform. Usually.</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>Desktop: Always create the installer or proper bundling procedure.
+          <ul>
+            <li>Windows: <a href="http://nsis.sourceforge.net/Main_Page" title="Nullsoft Scriptable Install System" class="initialism">NSIS</a> or <a href="http://www.jrsoftware.org/isinfo.php">Inno Setup</a></li>
+            <li>Mac: <abbr title="Apple Disk Image" class="initialism">DMG</abbr> or <abbr title="Package File" class="initialism">PKG</abbr></li>
+            <li>Steam: SteamPipe <small>See Valve documentation.</small></li>
+          </ul>
+        </li>
+        <li>Mobile: Create the final bundle. Look into local distribution systems.
+          <ul>
+            <li>Android
+              <ul>
+                <li>Include all forms of the executable: Debug, release, and signed/unsigned.</li>
+              </ul>
+            </li>
+            <li>iOS
+              <ul>
+                <li>Keep tabs on devices on the team’s whitelist, or use third-party distribution system like <a href="https://www.testflightapp.com/">TestFlight</a>.</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>Console: Disc
+          <ul>
+            <li>Create an ISO ready for QA or others to burn.</li>
+            <li>If different, create ‘store on hard drive’ files.</li>
+            <li>If you have the hardware, automate burning to discs.</li>
+          </ul>
+        </li>
+        <li>Console: Downloadable
+          <ul>
+            <li>Create automated scripts for developers and QA to use once a bundle is given to them.</li>
+          </ul>
+        </li>
+      </ul>
+  <h2>Discipline in Managing a Build Process</h2>
+    <h3>The Build didn’t break because the Build Engineer touched the build last.</h3>
+      <p>Possible problems can include:</p>
+      <ul>
+        <li>Toolchain differences between platforms (MSVC vs. GCC).</li>
+        <li>Asset requirement differences.</li>
+        <li>Debug build relaxes requirements that fail on release build.</li>
+      </ul>
+    <h3>Know how long it takes to make a build.</h3>
+      <p>Schedule the build time into your production timeline.</p>
+    <h3>Canceling builds makes build systems less effective.</h3>
+      <p>Many steps, especially 3rd party and console tools, can’t stop in the middle of a build. Even a system with stop points built in may take longer to cancel.</p>
+    <h3>Dust off your previously released title and build it.</h3>
+      <p>Already shipped the product a few months ago? Got a few moment to spare? Fire up a build!</p>
+      <ul>
+        <li>Checks to make sure you can go in an make fixes or ramp up a new platform with ease.</li>
+        <li>Lessons can be learned when you take a look back at your pervious work.</li>
+      </ul>
+    <h3>A note about Continuous Integration</h3>
+      <h4>CI answers the question: “Does the codebase work, right now?”</h4>
+      <p>Focus on speed of build, rather than rigor.</p>
+      <h4>Builds answers the question: “Can the codebase ship, right now?”</h4>
+      <p>Focus on the shippable state of the game, rather than speed of the build process.</p>

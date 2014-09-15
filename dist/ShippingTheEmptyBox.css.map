@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,KAAM,GACF,OAAO,EAAC,KAAK;AAEb,yBAAsB,GAClB,OAAO,EAAC,YAAY,EACpB,mBAAmB,EAAC,MAAM,EAC1B,KAAK,EAAC,IAAI,EACV,MAAM,EAAC,KAAK;;ACPpB,eAAgB,GACZ,OAAO,EAAC,QAAQ;AAChB,qBAAM,GACF,OAAO,EAAC,QAAQ;;ACHxB,IAAK,GACH,gBAAgB,EAAC,IAAI;;AAGvB,eAAgB,GACZ,gBAAgB,EAAC,IAAI,EACrB,UAAU,EAAC,CAAC,EACZ,aAAa,EAAC,IAAI,EAClB,aAAa,EAAC,GAAG,EACjB,OAAO,EAAC,SAAS;;ACRjB,sBAAiB,GACb,aAAa,EAAC,IAAI",
+"sources": ["../_assets/style/includes/icon.scss","../_assets/style/includes/jumbotron.scss","../_assets/style/components/core.scss","../_assets/style/components/nav.scss"],
+"names": [],
+"file": "ShippingTheEmptyBox.css"
+}
