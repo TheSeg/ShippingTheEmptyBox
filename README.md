@@ -1,4 +1,6 @@
 #Shipping the Empty Box:
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/TheSeg/ShippingTheEmptyBox.svg)](https://greenkeeper.io/)
 ***Releasing `[string:titleOfGame]` on `[array:platforms]`***
 
 *A lecture by [John "Seg" Seggerson](http://theseg.github.io/).*
