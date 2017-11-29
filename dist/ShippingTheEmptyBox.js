@@ -1,6 +1,6 @@
 /*! ShippingTheEmptyBox - v0.1.0
 * https://github.com/TheSeg/ShippingTheEmptyBox
-* Copyright (c) 2014 ; Licensed Creative Commons (CA-BY-SA) */
+* Copyright (c) 2017 ; Licensed Creative Commons (CA-BY-SA) */
 (function($){
   
   // Grunticon

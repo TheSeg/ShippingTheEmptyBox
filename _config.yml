@@ -3,7 +3,6 @@ baseurl: /ShippingTheEmptyBox/
 lsi: false
 markdown:  redcarpet
 permalink: pretty
-highlighter:  true
 timezone: America/Los_Angeles
 gems:
   - jekyll-redirect-from
